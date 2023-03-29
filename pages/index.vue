@@ -1,96 +1,102 @@
 <template>
-  <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-card class="logo py-4 d-flex justify-center">
-        <NuxtLogo />
-        <VuetifyLogo />
-      </v-card>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>
-            Vuetify is a progressive Material Design component framework for
-            Vue.js. It was designed to empower developers to create amazing
-            applications.
-          </p>
-          <p>
-            For more information on Vuetify, check out the
-            <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              documentation </a
-            >.
-          </p>
-          <p>
-            If you have questions, please join the official
-            <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord </a
-            >.
-          </p>
-          <p>
-            Find a bug? Report it on the github
-            <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board </a
-            >.
-          </p>
-          <p>
-            Thank you for developing with Vuetify and I look forward to bringing
-            more exciting features in the future.
-          </p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3" />
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt Documentation
-          </a>
-          <br />
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" nuxt to="/inspire"> Continue </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
-</template>
-
-<template>
-  <div>
-    <h1>Página principal</h1>
-    <ul>
-      <li><nuxt-link to="/characters">Personajes de Marvel</nuxt-link></li>
-    </ul>
-  </div>
-</template>
-
-<script>
-export default {
-  name: 'IndexPage',
-}
-</script>
+    <div class="characters-container">
+      <h1>Personajes de Marvel</h1>
+      <div class="characters-list">
+        <div v-for="character in characters" :key="character.id" class="character-card">
+          <div class="character-image" :style="{ backgroundImage: 'url(' + character.thumbnail.path + '/portrait_fantastic.' + character.thumbnail.extension + ')' }"></div>
+          <div class="character-name">{{ character.name }}</div>
+        </div>
+      </div>
+    </div>
+  </template>
+  
+   <script>
+   
+    
+    export default {
+  
+      data() {
+        return {
+          characters: []
+        }
+      },
+      async mounted() {
+          console.log(this)
+        const response = await this.$axios.$get('characters',{params:{
+          apikey: 'ead4747ffb208c5281361a1be8e8edcd',
+          
+        }})       
+         
+        
+        this.characters = response.data.results
+        
+    }
+  }
+  </script>
+  
+  <style scoped>
+  .characters-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    background-color: #000;
+    color: #fff;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .characters-list {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    position: relative;
+  }
+  
+  .character-card {
+    flex: 0 0 auto;
+    margin: 20px;
+    width: 300px;
+    height: 400px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.5s;
+    z-index: 1;
+  }
+  
+  .character-image {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    z-index: -1;
+    transition: transform 0.5s;
+  }
+  
+  .character-name {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    z-index: 1;
+  }
+  
+  .character-card:hover {
+    transform: scale(1.1);
+  }
+  
+  .character-card:hover .character-image {
+    transform: translateX(-10px);
+  }
+  </style>
