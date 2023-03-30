@@ -1,18 +1,35 @@
+<head>
+  <link href="https://fonts.google.com/specimen/Bangers" rel="stylesheet">
+</head>
+
+
+
 <template>
-    <div class="characters-container">
-      <h1>Personajes de Marvel</h1>
-      <div class="characters-list">
-        <div v-for="character in characters" :key="character.id" class="character-card">
-          <div class="character-image" :style="{ backgroundImage: 'url(' + character.thumbnail.path + '/portrait_fantastic.' + character.thumbnail.extension + ')' }"></div>
-          <div class="character-name">{{ character.name }}</div>
-        </div>
-      </div>
+  <div class="container">
+    <div class="container-top">
+      <!-- Contenido del contenedor superior -->
     </div>
-  </template>
-  
+
+    <div class="container-middle">
+      <v-slide-group show-arrows>
+        <v-slide-item v-for="(character, index) in characters" :key="index">
+          <div class="character-card">
+            <img :src="character.thumbnail.path + '/portrait_fantastic.' + character.thumbnail.extension" alt="Character image">
+            <p class="character-name" >{{ character.name }}</p>
+          </div>
+        </v-slide-item>
+      </v-slide-group>
+    </div>
+
+    <div class="container-bottom">
+      <!-- Contenido del contenedor inferior -->
+    </div>
+  </div>
+</template>
+
+
    <script>
-   
-    
+ 
     export default {
   
       data() {
@@ -21,7 +38,7 @@
         }
       },
       async mounted() {
-          console.log(this)
+      
         const response = await this.$axios.$get('characters',{params:{
           apikey: 'ead4747ffb208c5281361a1be8e8edcd',
           
@@ -32,71 +49,68 @@
         
     }
   }
-  </script>
+
+ 
+
+</script>
   
-  <style scoped>
-  .characters-container {
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .container-top {
+    height: 25%;
+    background-color: lightblue;
+  }
+  
+  .container-middle {
+    height: 35%;
+    background-color: lightgreen;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 10px;
+
+  }
+  
+  .container-bottom {
+    height: 40%;
+    background-color: pink;
+  }
+  .character-card {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100vh;
-    background-color: #000;
-    color: #fff;
-    overflow: hidden;
-    position: relative;
-  }
-  
-  .characters-list {
-    display: flex;
-    flex-wrap: nowrap;
     justify-content: center;
-    align-items: center;
-    margin-top: 50px;
-    position: relative;
-  }
-  
-  .character-card {
-    flex: 0 0 auto;
-    margin: 20px;
-    width: 300px;
-    height: 400px;
-    position: relative;
-    cursor: pointer;
-    transition: transform 0.5s;
-    z-index: 1;
-  }
-  
-  .character-image {
-    width: 100%;
     height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    z-index: -1;
-    transition: transform 0.5s;
-  }
-  
-  .character-name {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.5);
-    font-size: 20px;
-    font-weight: bold;
+    padding: 20px;
     text-align: center;
-    z-index: 1;
+
+
   }
-  
-  .character-card:hover {
-    transform: scale(1.1);
+  .character-card img {
+    width: 100%;
+    height: 60%;
+    object-fit: cover;
+
   }
-  
-  .character-card:hover .character-image {
-    transform: translateX(-10px);
+
+  .character-name {
+    margin-top: 5px;
+    color: black;
+    font-family: 'Bangers', cursive;
   }
-  </style>
+
+
+
+
+</style>
